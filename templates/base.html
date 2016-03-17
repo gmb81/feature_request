@@ -1,0 +1,35 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block title%}Top Threes {% endblock %}
+
+{% import 'bootstrap/fixes.html' as fixes %}
+
+{% block head %}
+{{super()}}
+{{fixes.ie8()}}
+{%endblock%}
+
+{%block styles%}
+{{super()}}
+{%endblock%}
+
+{% block navbar %}
+<div class="container">
+    {% if current_user.is_authenticated %}
+    <ul class="nav nav-pills">
+    <li role="presentation"><a href="{{url_for('clients') }}">Clients</a></li>
+    <li role="presentation"><a href="{{url_for('logout') }}">Logout</a></li>
+    <li role="presentation"><a href="{{url_for('add') }}">Add Features</a></li>
+</ul>
+    {% else %}
+    <ul class="nav nav-pills">
+    <li role="presentation"><a href="{{url_for('register') }}">Register</a></li>
+    <li role="presentation"><a href="{{url_for('login') }}">Login</a></li>
+    </ul>
+        {% endif %}
+
+</div>
+{% endblock %}
+{%block content %}
+{% endblock %}
+

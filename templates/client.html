@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+
+<!-- need to have a table where you show your cusotmers -->
+{% if clients %}
+<div class="panel panel-default">
+    <div class="panel-body">
+        <h4>Please click on the customer name to see a list of feature requests</h4>
+        {% for client in clients %}
+        <a href="{{url_for('client_list', client = client.client)}}">{{client.client}}</a>
+        {% endfor %}
+
+    </div>
+</div>
+{% else %}
+<div class="panel panel-default">
+    <div class="panel-body">
+        You have no client features logged, please add tickets to see customer list
+    </div>
+</div>
+
+
+{% endif %}
+
+
+
+
+
+{% endblock %}

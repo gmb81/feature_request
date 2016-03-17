@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import render_field %}
+
+
+
+{% block content %}
+<div class="container">
+<form method='POST' action=''>
+  {{ form.hidden_tag() }}
+  <div class="row">
+    <div class="six columns">
+      {{ render_field(form.username) }}
+    </div>
+
+    <div class="six columns">
+      {{ render_field(form.password) }}
+    </div>
+  </div>
+  <div class="u-full-width">
+    <input type="submit" class="button-primary" value="Login">
+  </div>
+</form>
+</div>
+
+
+
+
+{% endblock %}

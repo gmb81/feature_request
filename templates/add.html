@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{%import 'bootstrap/utils.html' as utils%}
+
+{% from 'macros.html' import render_field %}
+
+{% block content %}
+<div class="container">
+    {%with messages = get_flashed_messages(with_categories=True)%}
+    {%if messages%}
+    <div class="row">
+        <div class="col-md-12">
+            {{utils.flashed_messages(messages)}}
+        </div>
+    </div>
+    {%endif%}
+    {%endwith%}
+    <div class="jumbotron">
+        <h1>Welcome to the Top Three</h1>
+        <p>Here are your connections</p>
+    </div>
+
+
+    </div>
+
+
+<div class="panel panel-default">
+  <div class="panel-body">
+
+        <form method="POST" action="">
+        {{form.hidden_tag()}}
+
+        <div class="u-full-width">
+            {{ render_field(form.title) }}
+        </div>
+        <div class="u-full-width">
+            {{ render_field(form.description) }}
+        </div>
+        <div clas="u-full-width">
+            {{ render_field(form.client) }}
+        </div>
+        <div class="u-full-width">
+            {{ render_field(form.priority) }}
+        </div>
+        <div class="u-full-width">
+            {{ render_field(form.target_date) }}
+        </div>
+        <div class="u-full-width">
+            {{ render_field(form.ticket_url) }}
+        </div>
+        <div class="u-full-width">
+            {{ render_field(form.product_area) }}
+        </div>
+
+
+        <input type="submit" class="button-primary" value="Submit">
+            </form>
+    </div>
+    </div>
+
+
+
+{% endblock %}

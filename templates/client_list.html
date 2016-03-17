@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+
+<!-- need to have a table where you show your cusotmers -->
+{% if list %}
+<div class="panel panel-default">
+    <div class="panel-body">
+        <h4>Feature Request for {{client_name}}</h4>
+        <table class="table">
+            <thead><td>Feature Request Title</td><td>Feature Description</td><td>Feature Priority</td><td>Feature Target Date</td><td>URL</td><td>Product Area</td><td>Entered By</td></thead>
+        {% for item in list %}
+        <tr><td>{{item.title}}</td><td>{{item.description}}</td><td>{{item.client_priority}}</td><td>{{item.target_date}}</td><td>{{item.ticket_url}}</td><td>{{item.product_area}}</td><td>{{item.user.username}}</td></tr>
+        {% endfor %}
+        </table>
+
+    </div>
+</div>
+{% else %}
+<div class="panel panel-default">
+    <div class="panel-body">
+        There are no feature requests for this client
+    </div>
+</div>
+
+
+{% endif %}
+
+
+
+
+
+{% endblock %}
+
+
+
+
