@@ -1,9 +1,25 @@
 {% extends 'base.html' %}
 
+{%import 'bootstrap/utils.html' as utils%}
 
 
 {% block content %}
 
+
+
+<div class="container">
+    {%with messages = get_flashed_messages(with_categories=True)%}
+    {%if messages%}
+    <div class="row">
+        <div class="col-md-12">
+            {{utils.flashed_messages(messages)}}
+        </div>
+    </div>
+    {%endif%}
+    {%endwith%}
+
+
+    </div>
 
 <!-- need to have a table where you show your cusotmers -->
 {% if list %}
@@ -13,7 +29,7 @@
         <table class="table">
             <thead><td>Feature Request Title</td><td>Feature Description</td><td>Feature Priority</td><td>Feature Target Date</td><td>URL</td><td>Product Area</td><td>Entered By</td></thead>
         {% for item in list %}
-        <tr><td>{{item.title}}</td><td>{{item.description}}</td><td>{{item.client_priority}}</td><td>{{item.target_date}}</td><td>{{item.ticket_url}}</td><td>{{item.product_area}}</td><td>{{item.user.username}}</td></tr>
+        <tr><td><a href="{{ url_for('edit', title = item.title, priority = item.client_priority) }}">{{item.title}}</a></td><td>{{item.description}}</td><td>{{item.client_priority}}</td><td>{{item.target_date}}</td><td>{{item.ticket_url}}</td><td>{{item.product_area}}</td><td>{{item.user.username}}</td></tr>
         {% endfor %}
         </table>
 

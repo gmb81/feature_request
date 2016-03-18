@@ -5,7 +5,6 @@ from peewee import *
 
 DATABASE = SqliteDatabase('threes.db')
 
-
 class User(UserMixin,Model):
 
     username = CharField(max_length=80, unique=True)
@@ -45,6 +44,12 @@ class Feature(Model):
     target_date = DateField()
     ticket_url = CharField()
     product_area = CharField()
+    percent_complete = IntegerField(null=True, default=0)
+    working_ticket = ForeignKeyField(
+        rel_model=User,
+        related_name='working_ticket',
+        null=True
+    )
 
     class Meta:
         database = DATABASE

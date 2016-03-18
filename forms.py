@@ -1,16 +1,16 @@
 from flask_wtf import Form
-from wtforms import StringField, PasswordField, TextAreaField, BooleanField, SelectField, IntegerField
+from wtforms import StringField, PasswordField, TextAreaField, BooleanField, SelectField, IntegerField, FloatField
 from wtforms.validators import (DataRequired, Regexp, ValidationError, Email,
                                Length, EqualTo, Optional)
 from wtforms.fields.html5 import URLField, DateTimeLocalField, DateField
+from flask import g
 
 
-from models import User, Feature
+from models import User, Feature, DATABASE
 
 def username_exists(form, field):
     if User.select().where(User.username == field.data).exists():
         raise ValidationError('User with that email already exists.')
-
 
 
 
@@ -62,5 +62,17 @@ class FeatureForm(Form):
     target_date = DateField('Target Date', validators=[DataRequired()])
     ticket_url = URLField('Ticket URL', validators=[DataRequired()])
     product_area = SelectField('Product Area', choices=[('Policies', 'Policies'),('Billing', 'Billing'),('Claims', 'Claims'),('Reports','Reports')], validators=[DataRequired()])
+    percent_complete = IntegerField('Percent Complete', default=0, validators=[DataRequired()])
 
 
+class EditForm(Form):
+    '''Edit Form'''
+    title = StringField('Title', validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    client = SelectField('Client', choices=[('Client A', 'Client A'),('Client B', 'Client B'), ('Client C', 'Client C')], validators=[DataRequired()])
+    priority = IntegerField('Client Priority', validators=[DataRequired()])
+    target_date = DateField('Target Date', validators=[DataRequired()])
+    ticket_url = URLField('Ticket URL', validators=[DataRequired()])
+    product_area = SelectField('Product Area', choices=[('Policies', 'Policies'),('Billing', 'Billing'),('Claims', 'Claims'),('Reports','Reports')], validators=[DataRequired()])
+    percent_complete = IntegerField('Percent Complete')
+    working_ticket = StringField('Assigned To')

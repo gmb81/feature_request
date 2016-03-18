@@ -77,7 +77,7 @@ def register():
             email=form.email.data,
             password=form.password.data
         )
-        return redirect(url_for('customers'))
+        return redirect(url_for('clients'))
     return render_template('registration.html', form=form)
 
 
@@ -113,9 +113,41 @@ def logout():
 
 
 
+#edit feature request
+@app.route('/edit', methods=('GET', 'POST'))
+@login_required
+def edit():
+    title = request.args.get('title')
+    priority = request.args.get('priority')
+    editor = g.user._get_current_object()
+    record =models.Feature.select().where((models.Feature.client_priority==priority) & (models.Feature.title==title)).get()
+    print(record.client_priority)
+
+    form = forms.EditForm(obj=record)
+    form.priority.data = int(record.client_priority)
+    form.working_ticket.data=editor.username
+    if form.validate_on_submit():
+        try:
+            record.title = form.title.data
+            record.description = form.description.data
+            record.client = form.client.data
+            record.client_priority = form.priority.data
+            record.target_date = form.target_date.data
+            record.product_area = form.product_area.data
+            user_edit = models.User.select().where(models.User.username== form.working_ticket.data)
+
+            record.working_ticket = user_edit
+            record.percent_complete = form.percent_complete.data
+            record.save()
+            flash('Record updated', 'success')
+        except IntegrityError:
+            flash("you have an error", 'error')
+        return redirect(url_for('client_list', client = record.client))
+    return render_template('edit.html', form=form)
 
 
-#new features view by customer
+
+
 
 
 #show the customers
@@ -156,7 +188,8 @@ def add():
                 client_priority= form.priority.data,
                 target_date = form.target_date.data,
                 ticket_url = form.ticket_url.data,
-                product_area = form.product_area.data
+                product_area = form.product_area.data,
+                percent_complete = form.percent_complete.data
 
             )
 
@@ -186,7 +219,8 @@ def add():
                 client_priority= str(num),
                 target_date = form.target_date.data,
                 ticket_url = form.ticket_url.data,
-                product_area = form.product_area.data
+                product_area = form.product_area.data,
+                percent_complete = form.percent_complete.data
                 )
 
 
