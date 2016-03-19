@@ -1,9 +1,11 @@
 from flask_bcrypt import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from peewee import *
-
+from playhouse.sqlite_ext import SqliteExtDatabase
 
 DATABASE = SqliteDatabase('threes.db')
+
+
 
 class User(UserMixin,Model):
 

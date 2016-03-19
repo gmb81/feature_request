@@ -45,6 +45,7 @@ login_manager.login_view = 'login'
 
 @login_manager.user_loader
 def load_user(userid):
+    '''loads the currnet user'''
     try:
         return models.User.get(models.User.id == userid)
     except models.DoesNotExist:
@@ -69,6 +70,7 @@ def index():
 #register
 @app.route('/register', methods =('GET','POST'))
 def register():
+    '''allows users to register for the site '''
     form = forms.RegisterForm()
     if form.validate_on_submit():
         flash("Yay, you registered!", "success")
@@ -117,15 +119,22 @@ def logout():
 @app.route('/edit', methods=('GET', 'POST'))
 @login_required
 def edit():
+    '''allows user to edit the feature requests'''
+    #need to get the title from the request for the query.
     title = request.args.get('title')
+    #need to get the priority for the request for the query
     priority = request.args.get('priority')
+    #This will provide a model for the editor of the feature request, which will be the current user.
     editor = g.user._get_current_object()
+    #Need to select the record that correspondns with the priority and title. Since the priority is unique, we can just search these two values
     record =models.Feature.select().where((models.Feature.client_priority==priority) & (models.Feature.title==title)).get()
-    print(record.client_priority)
 
+    #create a form variable
     form = forms.EditForm(obj=record)
+    #set the values of the two following fields
     form.priority.data = int(record.client_priority)
     form.working_ticket.data=editor.username
+    #ensure that the form is valid for processng
     if form.validate_on_submit():
         try:
             record.title = form.title.data
@@ -133,10 +142,11 @@ def edit():
             record.client = form.client.data
             record.client_priority = form.priority.data
             record.target_date = form.target_date.data
-            record.product_area = form.product_area.data
+            record.product_area = form.product_area.data,
+            #this query will allow you to save the model of the user in order to determine if the user is a authorized to see the site.
             user_edit = models.User.select().where(models.User.username== form.working_ticket.data)
 
-            record.working_ticket = user_edit
+            record.working_ticket = user_edit,
             record.percent_complete = form.percent_complete.data
             record.save()
             flash('Record updated', 'success')
